@@ -1,19 +1,40 @@
+import { format } from "date-fns";
 import { ChatBubbleBottomCenterTextIcon } from "./icons/ChatBubbleBottomCenterTextIcon";
 import { EllipsisHorizontalIcon } from "./icons/EllipsisHorizontalIcon";
 import { ListBulletIcon } from "./icons/ListBulletIcon";
 import { PaperClipIcon } from "./icons/PaperClipIcon";
 
-export default function Card() {
+export interface CardProps {
+  title: string;
+  subtitle?: string;
+  progressRate: [number, number];
+  progressColor: string;
+  date?: number;
+  commentsCount: number;
+  filesCount: number;
+}
+
+export default function Card({
+  title,
+  subtitle,
+  progressRate,
+  progressColor,
+  date,
+  commentsCount,
+  filesCount,
+}: CardProps) {
   return (
     <article className="flex flex-col gap-y-4 rounded-xl bg-[#292B31] p-4">
       <div className="flex items-center justify-between">
         <div>
           <h4 className="text-base font-bold leading-none text-white">
-            Design new ui presentation
+            {title}
           </h4>
-          <span className="text-sm leading-none text-white/50">
-            Dribbble marketing
-          </span>
+          {subtitle && (
+            <span className="text-sm leading-none text-white/50">
+              {subtitle}
+            </span>
+          )}
         </div>
         <div className="flex size-6 shrink-0 items-center justify-center rounded-full border border-white/10 text-white">
           <EllipsisHorizontalIcon />
@@ -28,10 +49,18 @@ export default function Card() {
             </span>
             <span className="text-sm leading-none text-white/50">Progress</span>
           </div>
-          <span className="text-sm leading-none text-white">7/10</span>
+          <span className="text-sm leading-none text-white">
+            {progressRate[0]}/{progressRate[1]}
+          </span>
         </div>
         <div className="mt-2 h-1 w-full rounded-full bg-white/10">
-          <div className="h-1 w-1/2 rounded-full bg-[#FFA048]"></div>
+          <div
+            className="h-1 rounded-full"
+            style={{
+              width: `${(progressRate[0] / progressRate[1]) * 100}%`,
+              backgroundColor: progressColor,
+            }}
+          ></div>
         </div>
       </div>
 
@@ -44,11 +73,11 @@ export default function Card() {
         <div className="flex items-center gap-x-3 text-sm leading-none text-white/50">
           <div className="flex items-center gap-x-1">
             <ChatBubbleBottomCenterTextIcon className="size-4" />
-            <span>7</span>
+            <span>{commentsCount}</span>
           </div>
           <div className="flex items-center gap-x-1">
             <PaperClipIcon className="size-4" />
-            <span>2</span>
+            <span>{filesCount}</span>
           </div>
         </div>
       </div>
