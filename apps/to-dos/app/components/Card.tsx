@@ -38,7 +38,7 @@ export default function Card() {
       <div className="flex items-center justify-between">
         <div className="flex w-fit items-center justify-center rounded-2xl bg-white/10 px-4 py-2">
           <span className="text-sm leading-none text-[#989CAA]">
-            24 Aug 2022
+            {format(new Date(), "d MMM yyyy")}
           </span>
         </div>
         <div className="flex items-center gap-x-3 text-sm leading-none text-white/50">
