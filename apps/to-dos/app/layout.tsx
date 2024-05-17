@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 import "./globals.css";
+import classNames from "classnames";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
@@ -15,8 +16,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={notoSansKR.className}>{children}</body>
+    <html lang="en" className="h-full overflow-hidden">
+      <body
+        className={classNames("h-full overflow-hidden", notoSansKR.className)}
+      >
+        {children}
+      </body>
     </html>
   );
 }
