@@ -1,8 +1,8 @@
 import { format } from "date-fns";
-import { ChatBubbleBottomCenterTextIcon } from "./icons/ChatBubbleBottomCenterTextIcon";
-import { EllipsisHorizontalIcon } from "./icons/EllipsisHorizontalIcon";
-import { ListBulletIcon } from "./icons/ListBulletIcon";
-import { PaperClipIcon } from "./icons/PaperClipIcon";
+import { ChatBubbleBottomCenterTextIcon } from "./icons/chat-bubble-bottom-center-text-icon";
+import { EllipsisHorizontalIcon } from "./icons/ellipsis-horizontal-icon";
+import { ListBulletIcon } from "./icons/list-bullet-icon";
+import { PaperClipIcon } from "./icons/paper-clip-icon";
 import { Card as CardType } from "../types/card";
 
 type CardProps = CardType;

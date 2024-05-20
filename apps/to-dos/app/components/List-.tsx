@@ -1,5 +1,5 @@
 import { PropsWithChildren } from "react";
-import { PlusIcon } from "./icons/PlusIcon";
+import { PlusIcon } from "./icons/plus-icon";
 
 interface ListProps extends PropsWithChildren {
   title: string;
