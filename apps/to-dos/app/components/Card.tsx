@@ -9,9 +9,9 @@ export interface CardProps {
   subtitle?: string;
   progressRate: [number, number];
   progressColor: string;
-  date?: number;
-  commentsCount: number;
-  filesCount: number;
+  deadline?: Date;
+  commentsCount?: number;
+  filesCount?: number;
 }
 
 export default function Card({
@@ -19,7 +19,7 @@ export default function Card({
   subtitle,
   progressRate,
   progressColor,
-  date,
+  deadline,
   commentsCount,
   filesCount,
 }: CardProps) {
@@ -67,7 +67,7 @@ export default function Card({
       <div className="flex items-center justify-between">
         <div className="flex w-fit items-center justify-center rounded-2xl bg-white/10 px-4 py-2">
           <span className="text-sm leading-none text-[#989CAA]">
-            {format(new Date(), "d MMM yyyy")}
+            {format(deadline || new Date(), "d MMM yyyy")}
           </span>
         </div>
         <div className="flex items-center gap-x-3 text-sm leading-none text-white/50">
