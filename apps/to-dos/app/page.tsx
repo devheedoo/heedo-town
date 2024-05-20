@@ -1,7 +1,7 @@
-import Card from "./components/card";
-import List from "./components/list";
+import Card from "@/app/components/card";
+import List from "@/app/components/list";
 
-import { CARD_ITEMS } from "./fake-data/card-data";
+import { CARD_ITEMS } from "@/app/fake-data/card-data";
 
 export default function Home() {
   return (

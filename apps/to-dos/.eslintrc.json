@@ -1,5 +1,7 @@
 {
+  "plugins": ["tailwindcss"],
   "extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended"],
+  // ts, tsx, js 파일은 typescript-eslint/parser 적용
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js"],
