@@ -1,9 +1,10 @@
 import { format } from "date-fns";
-import { ChatBubbleBottomCenterTextIcon } from "./icons/chat-bubble-bottom-center-text-icon";
-import { EllipsisHorizontalIcon } from "./icons/ellipsis-horizontal-icon";
-import { ListBulletIcon } from "./icons/list-bullet-icon";
-import { PaperClipIcon } from "./icons/paper-clip-icon";
-import { Card as CardType } from "../types/card";
+
+import { ChatBubbleBottomCenterTextIcon } from "@/app/components/icons/chat-bubble-bottom-center-text-icon";
+import { EllipsisHorizontalIcon } from "@/app/components/icons/ellipsis-horizontal-icon";
+import { ListBulletIcon } from "@/app/components/icons/list-bullet-icon";
+import { PaperClipIcon } from "@/app/components/icons/paper-clip-icon";
+import { Card as CardType } from "@/app/types/card";
 
 type CardProps = CardType;
 

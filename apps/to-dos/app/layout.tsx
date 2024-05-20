@@ -1,7 +1,8 @@
+import "./globals.css";
+
+import classNames from "classnames";
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
-import "./globals.css";
-import classNames from "classnames";
 
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 

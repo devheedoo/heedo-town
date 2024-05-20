@@ -1,6 +1,5 @@
 import Card from "@/app/components/card";
 import List from "@/app/components/list";
-
 import { CARD_ITEMS } from "@/app/fake-data/card-data";
 
 export default function Home() {
