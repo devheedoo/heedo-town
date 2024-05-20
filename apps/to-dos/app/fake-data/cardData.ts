@@ -1,25 +1,6 @@
-// 모노레포: Nx, npm workspaces
-// 로그인/보안
-// 앱: Next.js
-// 디자인시스템: Storybook
-// 에러 핸들링
-// 마크다운 에디터
-// 애니메이션: Framer Motion
-// 그래프: D3
-// 로깅: Sentry
-// 네트워크, 웹서버: NGINX
-// 인터페이스: BFF
-// 배포: GitHub Action
-// 인프라: AWS...
-// 상태 관리: React Query, Jotai
-// CDN: CloudFront
-// TypeScript: Slash 라이브러리
+import { Card } from "../types/card";
 
-import { CardProps } from "../components/Card";
-
-type CardData = CardProps;
-
-export const CARD_ITEMS: CardData[] = [
+export const CARD_ITEMS: Card[] = [
   {
     title: "모노레포1",
     subtitle: "Nx, npm workspaces",

@@ -3,16 +3,9 @@ import { ChatBubbleBottomCenterTextIcon } from "./icons/ChatBubbleBottomCenterTe
 import { EllipsisHorizontalIcon } from "./icons/EllipsisHorizontalIcon";
 import { ListBulletIcon } from "./icons/ListBulletIcon";
 import { PaperClipIcon } from "./icons/PaperClipIcon";
+import { Card as CardType } from "../types/card";
 
-export interface CardProps {
-  title: string;
-  subtitle?: string;
-  progressRate: [number, number];
-  progressColor: string;
-  deadline?: Date;
-  commentsCount?: number;
-  filesCount?: number;
-}
+type CardProps = CardType;
 
 export default function Card({
   title,
