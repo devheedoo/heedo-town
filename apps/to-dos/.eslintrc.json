@@ -1,5 +1,38 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended"],
+  "plugins": [
+    // import 순서 정렬
+    "simple-import-sort",
+    "import",
+    // TypeScript Lint
+    "@typescript-eslint",
+    // Tailwind CSS 클래스명 정렬
+    "tailwindcss"
+  ],
+  "extends": [
+    // Next.js Lint
+    "next/core-web-vitals",
+    // TypeScript Lint
+    "plugin:@typescript-eslint/recommended",
+    // Tailwind CSS 클래스명 정렬
+    "plugin:tailwindcss/recommended"
+  ],
+  "rules": {
+    // import 순서 정렬
+    // https://github.com/lydell/eslint-plugin-simple-import-sort?tab=readme-ov-file#how-is-this-rule-different-from-importorder
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "import/first": "error",
+    "import/newline-after-import": "error",
+    "import/no-duplicates": "error",
+    // TypeScript type import
+    "@typescript-eslint/consistent-type-imports": "error"
+  },
+  // simple-import-sort: By default ESLint doesn’t parse import syntax
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": "latest"
+  },
+  // ts, tsx, js 파일은 typescript-eslint/parser 적용
   "overrides": [
     {
       "files": ["*.ts", "*.tsx", "*.js"],
