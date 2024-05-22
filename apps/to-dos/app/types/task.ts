@@ -1,7 +1,8 @@
+import { z } from "zod";
+
 export type Task = {
   listId: string;
   description: string;
-
   title: string;
   subtitle: string;
   progressRate: [number, number];
@@ -11,6 +12,15 @@ export type Task = {
   filesCount?: number;
 };
 
-// 상태값 === List
-// todo - doing - done
-// list vs state
+export const TaskSchema = z.object({
+  listId: z.string(),
+  description: z.string(),
+  title: z.string(),
+  subtitle: z.string(),
+  progressRate: z.tuple([z.number(), z.number()]),
+  progressColor: z.string(),
+  // NOTE: "2024-05-22T08:41:00.787Z"를 Date 타입으로 변환
+  deadline: z.coerce.date(),
+  commentsCount: z.number(),
+  filesCount: z.number(),
+});
