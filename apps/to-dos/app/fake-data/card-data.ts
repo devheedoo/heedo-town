@@ -1,6 +1,6 @@
-import type { Card } from "../types/card";
+import type { CardType } from "../types/card";
 
-export const TO_DOS: Card[] = [
+export const TO_DOS: CardType[] = [
   {
     title: "모노레포1",
     subtitle: "Nx, npm workspaces",
@@ -12,7 +12,7 @@ export const TO_DOS: Card[] = [
   },
 ];
 
-export const DOINGS: Card[] = [
+export const DOINGS: CardType[] = [
   {
     title: "모노레포2",
     subtitle: "Nx, npm workspaces",
@@ -24,7 +24,7 @@ export const DOINGS: Card[] = [
   },
 ];
 
-export const DONES: Card[] = [
+export const DONES: CardType[] = [
   {
     title: "모노레포3",
     subtitle: "Nx, npm workspaces",
@@ -36,7 +36,7 @@ export const DONES: Card[] = [
   },
 ];
 
-export const CARD_ITEMS: Card[] = [
+export const CARD_ITEMS: CardType[] = [
   {
     title: "모노레포1",
     subtitle: "Nx, npm workspaces",

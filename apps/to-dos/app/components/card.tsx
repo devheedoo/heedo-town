@@ -4,7 +4,7 @@ import { ChatBubbleBottomCenterTextIcon } from "@/app/components/icons/chat-bubb
 import { EllipsisHorizontalIcon } from "@/app/components/icons/ellipsis-horizontal-icon";
 import { ListBulletIcon } from "@/app/components/icons/list-bullet-icon";
 import { PaperClipIcon } from "@/app/components/icons/paper-clip-icon";
-import { type Card as CardType } from "@/app/types/card";
+import type { CardType } from "@/app/types/card";
 
 type CardProps = CardType;
 
