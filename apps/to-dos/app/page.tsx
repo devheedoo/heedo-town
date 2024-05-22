@@ -9,7 +9,8 @@ export default function Home() {
         <h1 className="leading-none text-white">TODO</h1>
       </aside>
 
-      <nav className="flex min-h-screen w-[320px] shrink-0 bg-[#222327] p-6">
+      {/* 프로젝트 기능 생기기 전까지 숨김 처리 */}
+      <nav className="hidden min-h-screen w-[320px] shrink-0 bg-[#222327] p-6">
         <h2 className="text-3xl leading-none text-white">Projects</h2>
       </nav>
 

@@ -10,3 +10,7 @@ export type Task = {
   commentsCount?: number;
   filesCount?: number;
 };
+
+// 상태값 === List
+// todo - doing - done
+// list vs state
