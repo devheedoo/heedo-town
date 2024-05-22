@@ -3,11 +3,11 @@
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 
+import { toDosAtom } from "@/app/atoms/to-dos-atom";
 import Card from "@/app/components/card";
 import List from "@/app/components/list";
-import { DOINGS, DONES, TO_DOS } from "@/app/fake-data/card-data";
+import { DOINGS, DONES } from "@/app/fake-data/card-data";
 
-const toDosAtom = atomWithStorage("to-dos", TO_DOS);
 const doingsAtom = atomWithStorage("doings", DOINGS);
 const donesAtom = atomWithStorage("dones", DONES);
 
