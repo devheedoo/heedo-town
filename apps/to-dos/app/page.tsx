@@ -1,15 +1,10 @@
 "use client";
 
 import { useAtom } from "jotai";
-import { atomWithStorage } from "jotai/utils";
 
-import { toDosAtom } from "@/app/atoms/to-dos-atom";
+import { doingsAtom, donesAtom, toDosAtom } from "@/app/atoms/tasks-atoms";
 import Card from "@/app/components/card";
 import List from "@/app/components/list";
-import { DOINGS, DONES } from "@/app/fake-data/card-data";
-
-const doingsAtom = atomWithStorage("doings", DOINGS);
-const donesAtom = atomWithStorage("dones", DONES);
 
 export default function Home() {
   const [toDos] = useAtom(toDosAtom);
