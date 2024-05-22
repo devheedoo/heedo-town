@@ -4,6 +4,8 @@ import classNames from "classnames";
 import type { Metadata } from "next";
 import { Noto_Sans_KR } from "next/font/google";
 
+import { Providers } from "@/app/components/providers";
+
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,7 +23,7 @@ export default function RootLayout({
       <body
         className={classNames("h-full overflow-hidden", notoSansKR.className)}
       >
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
