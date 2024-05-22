@@ -1,5 +1,41 @@
 import type { Card } from "../types/card";
 
+export const TO_DOS: Card[] = [
+  {
+    title: "모노레포1",
+    subtitle: "Nx, npm workspaces",
+    progressRate: [0, 2],
+    progressColor: "black",
+    deadline: new Date("2024-04-29"),
+    commentsCount: 2,
+    filesCount: 7,
+  },
+];
+
+export const DOINGS: Card[] = [
+  {
+    title: "모노레포2",
+    subtitle: "Nx, npm workspaces",
+    progressRate: [1, 2],
+    progressColor: "black",
+    deadline: new Date("2024-04-29"),
+    commentsCount: 2,
+    filesCount: 7,
+  },
+];
+
+export const DONES: Card[] = [
+  {
+    title: "모노레포3",
+    subtitle: "Nx, npm workspaces",
+    progressRate: [2, 2],
+    progressColor: "black",
+    deadline: new Date("2024-04-29"),
+    commentsCount: 2,
+    filesCount: 7,
+  },
+];
+
 export const CARD_ITEMS: Card[] = [
   {
     title: "모노레포1",
