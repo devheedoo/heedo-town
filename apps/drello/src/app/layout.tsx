@@ -20,7 +20,10 @@ export default function RootLayout({
   return (
     <html lang="ko" className="h-full overflow-hidden">
       <body
-        className={classNames("h-full overflow-hidden", notoSansKR.className)}
+        className={classNames(
+          "h-full overflow-hidden flex flex-col",
+          notoSansKR.className
+        )}
       >
         <nav className="flex h-12 border-b border-b-black p-2">
           {/* Logo */}
@@ -49,7 +52,9 @@ export default function RootLayout({
           </div>
         </nav>
 
-        {children}
+        <div id="content" className="relative grow">
+          {children}
+        </div>
       </body>
     </html>
   );
