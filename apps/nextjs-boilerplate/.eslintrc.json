@@ -32,6 +32,12 @@
     "sourceType": "module",
     "ecmaVersion": "latest"
   },
+  // 유틸함수로 감싸서 클래스명 선언 시 정렬
+  "settings": {
+    "tailwindcss": {
+      "callees": ["classNames", "cn"]
+    }
+  },
   // ts, tsx, js 파일은 typescript-eslint/parser 적용
   "overrides": [
     {
