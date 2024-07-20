@@ -6,8 +6,7 @@
     // TypeScript Error에 대해 Lint fix 적용
     "@typescript-eslint",
     // Tailwind 클래스명 정렬
-    "tailwindcss",
-    "daisyui"
+    "tailwindcss"
   ],
   "extends": [
     // Next.js Lint
@@ -15,8 +14,7 @@
     // TypeScript Lint
     "plugin:@typescript-eslint/recommended",
     // Tailwind 클래스명 정렬
-    "plugin:tailwindcss/recommended",
-    "plugin:daisyui"
+    "plugin:tailwindcss/recommended"
   ],
   "rules": {
     // import 순서 정렬
@@ -33,6 +31,11 @@
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": "latest"
+  },
+  "settings": {
+    "tailwindcss": {
+      "callees": ["classNames", "cn"]
+    }
   },
   // ts, tsx, js 파일은 typescript-eslint/parser 적용
   "overrides": [
