@@ -34,11 +34,15 @@ export default function Home() {
           <input
             type="text"
             placeholder="Note down your task!"
-            className="input input-bordered w-full"
+            className="input input-bordered peer w-full"
             value={newTaskTitle}
+            required
             onChange={(e) => setNewTaskTitle(e.target.value)}
           />
-          <button className="btn btn-outline btn-success" onClick={addTask}>
+          <button
+            className="btn btn-outline btn-success peer-invalid:btn-disabled"
+            onClick={addTask}
+          >
             Add
           </button>
         </div>
