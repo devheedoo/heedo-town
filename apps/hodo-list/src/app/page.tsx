@@ -2,6 +2,7 @@
 
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
+import { format } from "date-fns";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 
@@ -15,6 +16,7 @@ export default function Home() {
     const newTask: Task = {
       id: nanoid(),
       title: newTaskTitle,
+      createdAt: new Date().valueOf(),
     };
     setTasks((tasks) => [newTask, ...tasks]);
     setNewTaskTitle("");
@@ -63,6 +65,9 @@ export default function Home() {
                     className="checkbox checkbox-success"
                   />
                   <span className="label-text">{t.title}</span>
+                  <span className="label-text font-extralight">
+                    {format(t.createdAt, "d MMM yyyy")}
+                  </span>
                 </label>
                 {/* <button className="btn btn-outline px-2.5">
                   <PencilIcon className="size-6" />
