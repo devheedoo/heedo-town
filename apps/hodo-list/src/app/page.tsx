@@ -37,6 +37,7 @@ export default function Home() {
         </div>
 
         <div id="list-container">
+          {tasks.length === 0 && <span>No items...</span>}
           <ul className="flex flex-col gap-y-2">
             {tasks.map((t, index) => (
               <li className="flex items-center gap-2" key={index}>
@@ -47,26 +48,6 @@ export default function Home() {
                     className="checkbox checkbox-success"
                   />
                   <span className="label-text">{t}</span>
-                </label>
-                <button className="btn btn-outline px-2.5">
-                  <PencilIcon className="size-6" />
-                </button>
-                <button className="btn btn-outline px-2.5">
-                  <XMarkIcon className="size-6" />
-                </button>
-              </li>
-            ))}
-            {new Array(10).fill(0).map((_, index) => (
-              <li className="flex items-center gap-2" key={index}>
-                <label className="label cursor-pointer gap-x-2">
-                  <input
-                    type="checkbox"
-                    defaultChecked
-                    className="checkbox checkbox-success"
-                  />
-                  <span className="label-text">
-                    Read the book (at leat 5 pages)
-                  </span>
                 </label>
                 <button className="btn btn-outline px-2.5">
                   <PencilIcon className="size-6" />
