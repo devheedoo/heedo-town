@@ -2,15 +2,22 @@
 
 import { PencilIcon, XMarkIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
+import { nanoid } from "nanoid";
 import { useState } from "react";
 
+import type { Task } from "@/types/Task";
+
 export default function Home() {
-  const [task, setTask] = useState("가나다");
-  const [tasks, setTasks] = useState<string[]>([]);
+  const [newTaskTitle, setNewTaskTitle] = useState<string>("");
+  const [tasks, setTasks] = useState<Task[]>([]);
 
   function addTask() {
-    setTasks((tasks) => [task, ...tasks]);
-    setTask("");
+    const newTask: Task = {
+      id: nanoid(),
+      title: newTaskTitle,
+    };
+    setTasks((tasks) => [newTask, ...tasks]);
+    setNewTaskTitle("");
   }
 
   return (
@@ -28,8 +35,8 @@ export default function Home() {
             type="text"
             placeholder="Note down your task!"
             className="input input-bordered w-full"
-            value={task}
-            onChange={(e) => setTask(e.target.value)}
+            value={newTaskTitle}
+            onChange={(e) => setNewTaskTitle(e.target.value)}
           />
           <button className="btn btn-outline btn-success" onClick={addTask}>
             Add
@@ -39,15 +46,15 @@ export default function Home() {
         <div id="list-container">
           {tasks.length === 0 && <span>No items...</span>}
           <ul className="flex flex-col gap-y-2">
-            {tasks.map((t, index) => (
-              <li className="flex items-center gap-2" key={index}>
+            {tasks.map((t) => (
+              <li className="flex items-center gap-2" key={t.id}>
                 <label className="label cursor-pointer gap-x-2">
                   <input
                     type="checkbox"
                     defaultChecked
                     className="checkbox checkbox-success"
                   />
-                  <span className="label-text">{t}</span>
+                  <span className="label-text">{t.title}</span>
                 </label>
                 <button className="btn btn-outline px-2.5">
                   <PencilIcon className="size-6" />
