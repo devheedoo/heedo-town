@@ -1,6 +1,6 @@
 "use client";
 
-import { PencilIcon, XMarkIcon } from "@heroicons/react/24/solid";
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import { nanoid } from "nanoid";
 import { useState } from "react";
@@ -55,15 +55,13 @@ export default function Home() {
                 <label className="label cursor-pointer gap-x-2">
                   <input
                     type="checkbox"
-                    defaultChecked
                     className="checkbox checkbox-success"
                   />
                   <span className="label-text">{t.title}</span>
                 </label>
-                <button className="btn btn-outline px-2.5">
+                {/* <button className="btn btn-outline px-2.5">
                   <PencilIcon className="size-6" />
-                </button>
-                <button className="btn btn-outline px-2.5">
+                </button> */}
                   <XMarkIcon className="size-6" />
                 </button>
               </li>
