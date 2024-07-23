@@ -3,14 +3,18 @@
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
 import { format } from "date-fns";
+import { useAtom } from "jotai";
+import { atomWithStorage } from "jotai/utils";
 import { nanoid } from "nanoid";
 import { useState } from "react";
 
 import type { Task } from "@/types/Task";
 
+const tasksAtom = atomWithStorage<Task[]>("tasks", []);
+
 export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useAtom(tasksAtom);
 
   function addTask() {
     const newTask: Task = {
