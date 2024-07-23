@@ -20,6 +20,11 @@ export default function Home() {
     setNewTaskTitle("");
   }
 
+  function removeTask(taskId: string) {
+    const updatedTasks = tasks.filter((t) => t.id !== taskId);
+    setTasks(updatedTasks);
+  }
+
   return (
     <div
       className={classNames(
@@ -62,6 +67,10 @@ export default function Home() {
                 {/* <button className="btn btn-outline px-2.5">
                   <PencilIcon className="size-6" />
                 </button> */}
+                <button
+                  className="btn btn-outline px-2.5"
+                  onClick={() => removeTask(t.id)}
+                >
                   <XMarkIcon className="size-6" />
                 </button>
               </li>
