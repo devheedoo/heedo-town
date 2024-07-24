@@ -6,6 +6,7 @@ import { format } from "date-fns";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nanoid } from "nanoid";
+import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import type { Task } from "@/types/Task";
@@ -17,6 +18,10 @@ export default function Home() {
   const [tasks, setTasks] = useAtom(tasksAtom);
 
   function addTask() {
+    if (newTaskTitle.trim().length === 0) {
+      return;
+    }
+
     const newTask: Task = {
       id: nanoid(),
       title: newTaskTitle,
@@ -29,6 +34,12 @@ export default function Home() {
   function removeTask(taskId: string) {
     const updatedTasks = tasks.filter((t) => t.id !== taskId);
     setTasks(updatedTasks);
+  }
+
+  function handleKeyUpAddButton(e: KeyboardEvent<HTMLInputElement>) {
+    if (e.key === "Enter") {
+      addTask();
+    }
   }
 
   return (
@@ -49,6 +60,7 @@ export default function Home() {
             value={newTaskTitle}
             required
             onChange={(e) => setNewTaskTitle(e.target.value)}
+            onKeyUp={handleKeyUpAddButton}
           />
           <button
             className="btn btn-outline btn-success peer-invalid:btn-disabled"
