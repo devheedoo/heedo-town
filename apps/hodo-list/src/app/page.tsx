@@ -2,7 +2,7 @@
 
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
-import { format } from "date-fns";
+import { format, isToday } from "date-fns";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nanoid } from "nanoid";
@@ -40,6 +40,13 @@ export default function Home() {
     if (e.key === "Enter") {
       addTask();
     }
+  }
+
+  function formatDate(d: number) {
+    if (isToday(d)) {
+      return format(d, "HH:MM:ss");
+    }
+    return format(d, "d MMM yyyy");
   }
 
   return (
@@ -82,7 +89,7 @@ export default function Home() {
                   />
                   <span className="label-text">{t.title}</span>
                   <span className="label-text font-extralight">
-                    {format(t.createdAt, "d MMM yyyy")}
+                    {formatDate(t.createdAt)}
                   </span>
                 </label>
                 {/* <button className="btn btn-outline px-2.5">
