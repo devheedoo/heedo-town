@@ -81,7 +81,7 @@ export default function Home() {
           {tasks.length === 0 && <span>No items...</span>}
           <ul className="flex flex-col gap-y-2">
             {tasks.map((t) => (
-              <li className="flex items-center gap-2" key={t.id}>
+              <li className="gap flex items-center" key={t.id}>
                 <label className="label cursor-pointer gap-x-2">
                   <input
                     type="checkbox"
@@ -95,10 +95,7 @@ export default function Home() {
                 {/* <button className="btn btn-outline px-2.5">
                   <PencilIcon className="size-6" />
                 </button> */}
-                <button
-                  className="btn btn-outline px-2.5"
-                  onClick={() => removeTask(t.id)}
-                >
+                <button className="px-2.5" onClick={() => removeTask(t.id)}>
                   <XMarkIcon className="size-6" />
                 </button>
               </li>
