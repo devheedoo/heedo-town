@@ -9,7 +9,7 @@ import { nanoid } from "nanoid";
 import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
-import type { Task } from "@/types/Task";
+import type { Task, TaskState } from "@/types/Task";
 
 const tasksAtom = atomWithStorage<Task[]>("tasks", []);
 
@@ -26,9 +26,27 @@ export default function Home() {
       id: nanoid(),
       title: newTaskTitle,
       createdAt: new Date().valueOf(),
+      state: "todo",
     };
     setTasks((tasks) => [newTask, ...tasks]);
     setNewTaskTitle("");
+  }
+
+  function updateTaskState(taskId: string, state: TaskState) {
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) {
+      return;
+    }
+
+    const taskUpdated = Object.assign({}, task);
+    taskUpdated.state = state === "todo" ? "done" : "todo";
+
+    const tasksUpdated = tasks
+      .filter((t) => t.id !== taskId)
+      .concat([taskUpdated]);
+    tasksUpdated.sort((a, b) => b.createdAt - a.createdAt);
+
+    setTasks(tasksUpdated);
   }
 
   function removeTask(taskId: string) {
@@ -86,6 +104,8 @@ export default function Home() {
                   <input
                     type="checkbox"
                     className="checkbox checkbox-success"
+                    defaultChecked={t.state === "done"}
+                    onClick={() => updateTaskState(t.id, "done")}
                   />
                   <span className="label-text">{t.title}</span>
                   <span className="label-text font-extralight">
