@@ -44,14 +44,10 @@ export default function Home() {
       ...task,
       state: task.state === "todo" ? "done" : "todo",
     };
-    console.log("🚀 ~ updateTaskState ~ taskUpdated:", taskUpdated);
-
     const tasksUpdated = tasks
       .filter((t) => t.id !== taskId)
       .concat([taskUpdated]);
     tasksUpdated.sort((a, b) => b.createdAt - a.createdAt);
-
-    console.log("🚀 ~ updateTaskState ~ tasksUpdated:", tasksUpdated);
     setTasks(tasksUpdated);
   }
 
@@ -74,7 +70,6 @@ export default function Home() {
   }
 
   function saveAsOldTasks() {
-    console.log("🚀 ~ saveAsOldTasks ~ tasks:", tasks);
     setOldTasks(tasks);
   }
 
@@ -87,7 +82,6 @@ export default function Home() {
     );
 
     const removedTasks = oldTasks.filter((t) => removedTaskIds.includes(t.id));
-    console.log("🚀 ~ getRemovedTasks ~ removedTasks:", removedTasks);
     return removedTasks;
   }
 
@@ -100,21 +94,18 @@ export default function Home() {
     );
 
     const addedTasks = tasks.filter((t) => addedTaskIds.includes(t.id));
-    console.log("🚀 ~ getaddedTasks ~ addedTasks:", addedTasks);
     return addedTasks;
   }
 
   function getAddedTodoTasks() {
     const addedTasks = getAddedTasks();
     const addedTodoTasks = addedTasks.filter((t) => t.state === "todo");
-    console.log("🚀 ~ getAddedDoneTasks ~ addedDoneTasks:", addedTodoTasks);
     return addedTodoTasks;
   }
 
   function getAddedDoneTasks() {
     const addedTasks = getAddedTasks();
     const addedDoneTasks = addedTasks.filter((t) => t.state === "done");
-    console.log("🚀 ~ getAddedDoneTasks ~ addedDoneTasks:", addedDoneTasks);
     return addedDoneTasks;
   }
 
@@ -128,10 +119,6 @@ export default function Home() {
 
     const keptCurrentTasks = tasks.filter((t) =>
       keptCurrentTaskIds.includes(t.id)
-    );
-    console.log(
-      "🚀 ~ getKeptCurrentTasks ~ keptCurrentTasks:",
-      keptCurrentTasks
     );
     return keptCurrentTasks;
   }
@@ -147,10 +134,6 @@ export default function Home() {
         return null;
       })
       .filter((t) => t !== null);
-    console.log(
-      "🚀 ~ getUpdatedCurrentTasks ~ updatedCurrentTasks:",
-      updatedCurrentTasks
-    );
     return updatedCurrentTasks;
   }
 
