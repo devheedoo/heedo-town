@@ -79,23 +79,27 @@ export default function Home() {
   }
 
   function getRemovedTasks() {
-    const oldTaskIdsSet = new Set(oldTasks.map((t) => t.id));
-    const currentTaskIdsSet = new Set(tasks.map((t) => t.id));
+    const oldTaskIds = oldTasks.map((t) => t.id);
+    const currentTaskIds = tasks.map((t) => t.id);
 
-    const removedTaskIds = oldTaskIdsSet.difference(currentTaskIdsSet);
+    const removedTaskIds = oldTaskIds.filter(
+      (taskId) => !currentTaskIds.includes(taskId)
+    );
 
-    const removedTasks = oldTasks.filter((t) => removedTaskIds.has(t.id));
+    const removedTasks = oldTasks.filter((t) => removedTaskIds.includes(t.id));
     console.log("🚀 ~ getRemovedTasks ~ removedTasks:", removedTasks);
     return removedTasks;
   }
 
   function getAddedTasks() {
-    const oldTaskIdsSet = new Set(oldTasks.map((t) => t.id));
-    const currentTaskIdsSet = new Set(tasks.map((t) => t.id));
+    const oldTaskIds = oldTasks.map((t) => t.id);
+    const currentTaskIds = tasks.map((t) => t.id);
 
-    const addedTaskIds = currentTaskIdsSet.difference(oldTaskIdsSet);
+    const addedTaskIds = currentTaskIds.filter(
+      (taskId) => !oldTaskIds.includes(taskId)
+    );
 
-    const addedTasks = tasks.filter((t) => addedTaskIds.has(t.id));
+    const addedTasks = tasks.filter((t) => addedTaskIds.includes(t.id));
     console.log("🚀 ~ getaddedTasks ~ addedTasks:", addedTasks);
     return addedTasks;
   }
@@ -115,12 +119,16 @@ export default function Home() {
   }
 
   function getKeptCurrentTasks() {
-    const oldTaskIdsSet = new Set(oldTasks.map((t) => t.id));
-    const currentTaskIdsSet = new Set(tasks.map((t) => t.id));
+    const oldTaskIds = oldTasks.map((t) => t.id);
+    const currentTaskIds = tasks.map((t) => t.id);
 
-    const keptCurrentTaskIds = currentTaskIdsSet.intersection(oldTaskIdsSet);
+    const keptCurrentTaskIds = oldTaskIds.filter((taskId) =>
+      currentTaskIds.includes(taskId)
+    );
 
-    const keptCurrentTasks = tasks.filter((t) => keptCurrentTaskIds.has(t.id));
+    const keptCurrentTasks = tasks.filter((t) =>
+      keptCurrentTaskIds.includes(t.id)
+    );
     console.log(
       "🚀 ~ getKeptCurrentTasks ~ keptCurrentTasks:",
       keptCurrentTasks
