@@ -10,14 +10,22 @@ import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import type { Task } from "@/types/Task";
+import {
+  getTasksAddedDoneToday,
+  getTasksAddedTodoToday,
+  getTasksRemovedToday,
+  getTasksStateChangedToday,
+} from "@/utils/task-filters";
 
-const tasksAtom = atomWithStorage<Task[]>("tasks", []);
-const oldTasksAtom = atomWithStorage<Task[]>("oldTasks", []);
+const tasksTodayAtom = atomWithStorage<Task[]>("tasks-today", []);
+const tasksYesterdayAtom = atomWithStorage<Task[]>("tasks-yesterday", []);
 
 export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
-  const [tasks, setTasks] = useAtom(tasksAtom);
-  const [oldTasks, setOldTasks] = useAtom(oldTasksAtom);
+
+  // TODO: LocalStorage 대신 로그인 후 데이터베이스 사용하기
+  const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
+  const [tasksYesterday, setTasksYesterday] = useAtom(tasksYesterdayAtom);
 
   function addTask() {
     if (newTaskTitle.trim().length === 0) {
@@ -30,12 +38,12 @@ export default function Home() {
       createdAt: new Date().valueOf(),
       state: "todo",
     };
-    setTasks((tasks) => [newTask, ...tasks]);
+    setTasksToday((tasks) => [newTask, ...tasks]);
     setNewTaskTitle("");
   }
 
   function updateTaskState(taskId: string) {
-    const task = tasks.find((t) => t.id === taskId);
+    const task = tasksToday.find((t) => t.id === taskId);
     if (!task) {
       return;
     }
@@ -44,16 +52,16 @@ export default function Home() {
       ...task,
       state: task.state === "todo" ? "done" : "todo",
     };
-    const tasksUpdated = tasks
+    const tasksUpdated = tasksToday
       .filter((t) => t.id !== taskId)
       .concat([taskUpdated]);
     tasksUpdated.sort((a, b) => b.createdAt - a.createdAt);
-    setTasks(tasksUpdated);
+    setTasksToday(tasksUpdated);
   }
 
   function removeTask(taskId: string) {
-    const updatedTasks = tasks.filter((t) => t.id !== taskId);
-    setTasks(updatedTasks);
+    const updatedTasks = tasksToday.filter((t) => t.id !== taskId);
+    setTasksToday(updatedTasks);
   }
 
   function handleKeyUpAddButton(e: KeyboardEvent<HTMLInputElement>) {
@@ -70,71 +78,7 @@ export default function Home() {
   }
 
   function saveAsOldTasks() {
-    setOldTasks(tasks);
-  }
-
-  function getRemovedTasks() {
-    const oldTaskIds = oldTasks.map((t) => t.id);
-    const currentTaskIds = tasks.map((t) => t.id);
-
-    const removedTaskIds = oldTaskIds.filter(
-      (taskId) => !currentTaskIds.includes(taskId)
-    );
-
-    const removedTasks = oldTasks.filter((t) => removedTaskIds.includes(t.id));
-    return removedTasks;
-  }
-
-  function getAddedTasks() {
-    const oldTaskIds = oldTasks.map((t) => t.id);
-    const currentTaskIds = tasks.map((t) => t.id);
-
-    const addedTaskIds = currentTaskIds.filter(
-      (taskId) => !oldTaskIds.includes(taskId)
-    );
-
-    const addedTasks = tasks.filter((t) => addedTaskIds.includes(t.id));
-    return addedTasks;
-  }
-
-  function getAddedTodoTasks() {
-    const addedTasks = getAddedTasks();
-    const addedTodoTasks = addedTasks.filter((t) => t.state === "todo");
-    return addedTodoTasks;
-  }
-
-  function getAddedDoneTasks() {
-    const addedTasks = getAddedTasks();
-    const addedDoneTasks = addedTasks.filter((t) => t.state === "done");
-    return addedDoneTasks;
-  }
-
-  function getKeptCurrentTasks() {
-    const oldTaskIds = oldTasks.map((t) => t.id);
-    const currentTaskIds = tasks.map((t) => t.id);
-
-    const keptCurrentTaskIds = oldTaskIds.filter((taskId) =>
-      currentTaskIds.includes(taskId)
-    );
-
-    const keptCurrentTasks = tasks.filter((t) =>
-      keptCurrentTaskIds.includes(t.id)
-    );
-    return keptCurrentTasks;
-  }
-
-  function getUpdatedCurrentTasks() {
-    const keptCurrentTasks = getKeptCurrentTasks();
-    const updatedCurrentTasks = keptCurrentTasks
-      .map((currentTask) => {
-        const oldTask = oldTasks.find((t) => t.id === currentTask.id);
-        if (oldTask !== undefined && oldTask.state !== currentTask.state) {
-          return currentTask;
-        }
-        return null;
-      })
-      .filter((t) => t !== null);
-    return updatedCurrentTasks;
+    setTasksYesterday(tasksToday);
   }
 
   return (
@@ -181,50 +125,60 @@ export default function Home() {
               <h3 className="text-lg font-bold">하루 마무리하기</h3>
               <p className="py-4">오늘의 성장을 기록할게요.</p>
               <ul className="flex flex-col gap-y-1">
-                {getUpdatedCurrentTasks().map((t) => (
-                  <li className="gap flex items-center" key={t.id}>
-                    <label className="label gap-x-2">
-                      <span className="label-text font-light">[완료]</span>
-                      <span className="label-text">{t.title}</span>
-                      <span className="label-text font-extralight">
-                        {formatDate(t.createdAt)}
-                      </span>
-                    </label>
-                  </li>
-                ))}
-                {getAddedDoneTasks().map((t) => (
-                  <li className="gap flex items-center" key={t.id}>
-                    <label className="label gap-x-2">
-                      <span className="label-text font-light">[추가+완료]</span>
-                      <span className="label-text">{t.title}</span>
-                      <span className="label-text font-extralight">
-                        {formatDate(t.createdAt)}
-                      </span>
-                    </label>
-                  </li>
-                ))}
-                {getAddedTodoTasks().map((t) => (
-                  <li className="gap flex items-center" key={t.id}>
-                    <label className="label gap-x-2">
-                      <span className="label-text font-light">[추가]</span>
-                      <span className="label-text">{t.title}</span>
-                      <span className="label-text font-extralight">
-                        {formatDate(t.createdAt)}
-                      </span>
-                    </label>
-                  </li>
-                ))}
-                {getRemovedTasks().map((t) => (
-                  <li className="gap flex items-center" key={t.id}>
-                    <label className="label gap-x-2">
-                      <span className="label-text font-light">[취소]</span>
-                      <span className="label-text">{t.title}</span>
-                      <span className="label-text font-extralight">
-                        {formatDate(t.createdAt)}
-                      </span>
-                    </label>
-                  </li>
-                ))}
+                {getTasksStateChangedToday({ tasksYesterday, tasksToday }).map(
+                  (t) => (
+                    <li className="gap flex items-center" key={t.id}>
+                      <label className="label gap-x-2">
+                        <span className="label-text font-light">[완료]</span>
+                        <span className="label-text">{t.title}</span>
+                        <span className="label-text font-extralight">
+                          {formatDate(t.createdAt)}
+                        </span>
+                      </label>
+                    </li>
+                  )
+                )}
+                {getTasksAddedDoneToday({ tasksYesterday, tasksToday }).map(
+                  (t) => (
+                    <li className="gap flex items-center" key={t.id}>
+                      <label className="label gap-x-2">
+                        <span className="label-text font-light">
+                          [추가+완료]
+                        </span>
+                        <span className="label-text">{t.title}</span>
+                        <span className="label-text font-extralight">
+                          {formatDate(t.createdAt)}
+                        </span>
+                      </label>
+                    </li>
+                  )
+                )}
+                {getTasksAddedTodoToday({ tasksYesterday, tasksToday }).map(
+                  (t) => (
+                    <li className="gap flex items-center" key={t.id}>
+                      <label className="label gap-x-2">
+                        <span className="label-text font-light">[추가]</span>
+                        <span className="label-text">{t.title}</span>
+                        <span className="label-text font-extralight">
+                          {formatDate(t.createdAt)}
+                        </span>
+                      </label>
+                    </li>
+                  )
+                )}
+                {getTasksRemovedToday({ tasksYesterday, tasksToday }).map(
+                  (t) => (
+                    <li className="gap flex items-center" key={t.id}>
+                      <label className="label gap-x-2">
+                        <span className="label-text font-light">[취소]</span>
+                        <span className="label-text">{t.title}</span>
+                        <span className="label-text font-extralight">
+                          {formatDate(t.createdAt)}
+                        </span>
+                      </label>
+                    </li>
+                  )
+                )}
               </ul>
 
               <div className="modal-action">
@@ -241,9 +195,9 @@ export default function Home() {
         </div>
 
         <div id="list-container">
-          {tasks.length === 0 && <span>No items...</span>}
+          {tasksToday.length === 0 && <span>No items...</span>}
           <ul className="flex flex-col gap-y-2">
-            {tasks.map((t) => (
+            {tasksToday.map((t) => (
               <li className="gap flex items-center" key={t.id}>
                 <label className="label cursor-pointer gap-x-2">
                   <input
