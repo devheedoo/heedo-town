@@ -2,7 +2,6 @@
 
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import classNames from "classnames";
-import { format, isToday } from "date-fns";
 import { useAtom } from "jotai";
 import { atomWithStorage } from "jotai/utils";
 import { nanoid } from "nanoid";
@@ -10,6 +9,7 @@ import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import type { Task } from "@/types/Task";
+import { showTodayTimeOrDate } from "@/utils/date-format";
 import {
   getTasksAddedDoneToday,
   getTasksAddedTodoToday,
@@ -27,6 +27,7 @@ export default function Home() {
   const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
   const [tasksYesterday, setTasksYesterday] = useAtom(tasksYesterdayAtom);
 
+  // state
   function addTask() {
     if (newTaskTitle.trim().length === 0) {
       return;
@@ -64,21 +65,15 @@ export default function Home() {
     setTasksToday(updatedTasks);
   }
 
+  function updateTasksYesterday() {
+    setTasksYesterday(tasksToday);
+  }
+
+  // handler
   function handleKeyUpAddButton(e: KeyboardEvent<HTMLInputElement>) {
     if (e.key === "Enter") {
       addTask();
     }
-  }
-
-  function formatDate(d: number) {
-    if (isToday(d)) {
-      return format(d, "HH:MM:ss");
-    }
-    return format(d, "d MMM yyyy");
-  }
-
-  function saveAsOldTasks() {
-    setTasksYesterday(tasksToday);
   }
 
   return (
@@ -132,7 +127,7 @@ export default function Home() {
                         <span className="label-text font-light">[완료]</span>
                         <span className="label-text">{t.title}</span>
                         <span className="label-text font-extralight">
-                          {formatDate(t.createdAt)}
+                          {showTodayTimeOrDate(t.createdAt)}
                         </span>
                       </label>
                     </li>
@@ -147,7 +142,7 @@ export default function Home() {
                         </span>
                         <span className="label-text">{t.title}</span>
                         <span className="label-text font-extralight">
-                          {formatDate(t.createdAt)}
+                          {showTodayTimeOrDate(t.createdAt)}
                         </span>
                       </label>
                     </li>
@@ -160,7 +155,7 @@ export default function Home() {
                         <span className="label-text font-light">[추가]</span>
                         <span className="label-text">{t.title}</span>
                         <span className="label-text font-extralight">
-                          {formatDate(t.createdAt)}
+                          {showTodayTimeOrDate(t.createdAt)}
                         </span>
                       </label>
                     </li>
@@ -173,7 +168,7 @@ export default function Home() {
                         <span className="label-text font-light">[취소]</span>
                         <span className="label-text">{t.title}</span>
                         <span className="label-text font-extralight">
-                          {formatDate(t.createdAt)}
+                          {showTodayTimeOrDate(t.createdAt)}
                         </span>
                       </label>
                     </li>
@@ -183,8 +178,10 @@ export default function Home() {
 
               <div className="modal-action">
                 <form method="dialog" className="flex items-center gap-x-2">
-                  {/* if there is a button in form, it will close the modal */}
-                  <button className="btn btn-success" onClick={saveAsOldTasks}>
+                  <button
+                    className="btn btn-success"
+                    onClick={updateTasksYesterday}
+                  >
                     기록 저장하기
                   </button>
                   <button className="btn btn-outline btn-success">취소</button>
@@ -208,7 +205,7 @@ export default function Home() {
                   />
                   <span className="label-text">{t.title}</span>
                   <span className="label-text font-extralight">
-                    {formatDate(t.createdAt)}
+                    {showTodayTimeOrDate(t.createdAt)}
                   </span>
                 </label>
                 {/* <button className="btn btn-outline px-2.5">
