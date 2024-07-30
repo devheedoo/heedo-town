@@ -10,5 +10,13 @@
     ],
     "sharedGlobals": []
   },
-  "nxCloudAccessToken": "OTFhNjNmZjAtMTU5My00NTRkLTk0YWYtNDA3NmZiMTIyYTkwfHJlYWQtd3JpdGU="
+  "nxCloudAccessToken": "OTFhNjNmZjAtMTU5My00NTRkLTk0YWYtNDA3NmZiMTIyYTkwfHJlYWQtd3JpdGU=",
+  "plugins": [
+    {
+      "plugin": "@nx/playwright/plugin",
+      "options": {
+        "targetName": "e2e"
+      }
+    }
+  ]
 }
