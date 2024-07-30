@@ -10,10 +10,12 @@
   ],
   "dependencies": {},
   "devDependencies": {
+    "@nx/devkit": "19.0.3",
     "@nx/js": "19.0.3",
     "@nx/playwright": "19.0.3",
     "@nx/workspace": "19.0.3",
     "@playwright/test": "^1.36.0",
+    "eslint-plugin-playwright": "^0.15.3",
     "nx": "19.0.3"
   }
 }
