@@ -82,6 +82,7 @@ export default function Home() {
             required
             onChange={(e) => setNewTaskTitle(e.target.value)}
             onKeyUp={handleKeyUpAddButton}
+            autoFocus
           />
           <button
             className="btn btn-outline btn-success peer-invalid:btn-disabled"
