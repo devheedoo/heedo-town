@@ -82,7 +82,8 @@ export default function Home() {
             required
             onChange={(e) => setNewTaskTitle(e.target.value)}
             onKeyUp={handleKeyUpAddButton}
-            autoFocus
+            autoFocus // !!! nonviable on webkit
+            data-testid="task-input"
           />
           <button
             className="btn btn-outline btn-success peer-invalid:btn-disabled"
@@ -118,7 +119,12 @@ export default function Home() {
                     defaultChecked={t.state === "done"}
                     onClick={() => updateTaskState(t.id)}
                   />
-                  <span className="label-text">{t.title}</span>
+                  <span
+                    data-testid="task-title"
+                    className="text-sm normal-case text-gray-200"
+                  >
+                    {t.title}
+                  </span>
                   <span className="label-text font-extralight">
                     {showTodayTimeOrDate(t.createdAt)}
                   </span>
