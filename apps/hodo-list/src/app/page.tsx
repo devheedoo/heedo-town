@@ -8,12 +8,15 @@ import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import { tasksTodayAtom } from "@/atoms/tasks-atom";
+import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
 import { ReportModal } from "@/components/modals/report-modal";
 import type { Task } from "@/types/Task";
 import { showTodayTimeOrDate } from "@/utils/date-format";
 
 export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
+  const [isOpenConfirmRemoveModal, setIsOpenConfirmRemoveModal] =
+    useState(false);
 
   // TODO: LocalStorage 대신 로그인 후 데이터베이스 사용하기
   const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
@@ -49,11 +52,6 @@ export default function Home() {
       .concat([taskUpdated]);
     tasksUpdated.sort((a, b) => b.createdAt - a.createdAt);
     setTasksToday(tasksUpdated);
-  }
-
-  function removeTask(taskId: string) {
-    const updatedTasks = tasksToday.filter((t) => t.id !== taskId);
-    setTasksToday(updatedTasks);
   }
 
   // handler
@@ -111,7 +109,7 @@ export default function Home() {
           {tasksToday.length === 0 && <span>No items...</span>}
           <ul className="flex flex-col gap-y-2">
             {tasksToday.map((t) => (
-              <li className="gap flex items-center" key={t.id}>
+              <li className="flex items-center gap-1.5" key={t.id}>
                 <label className="label cursor-pointer gap-x-2">
                   <input
                     type="checkbox"
@@ -119,22 +117,33 @@ export default function Home() {
                     defaultChecked={t.state === "done"}
                     onClick={() => updateTaskState(t.id)}
                   />
-                  <span
-                    data-testid="task-title"
-                    className="text-sm normal-case text-gray-200"
-                  >
-                    {t.title}
-                  </span>
-                  <span className="label-text font-extralight">
-                    {showTodayTimeOrDate(t.createdAt)}
-                  </span>
                 </label>
+                <span
+                  data-testid="task-title"
+                  className="text-sm normal-case text-gray-200"
+                >
+                  {t.title}
+                </span>
+                <span className="label-text font-extralight">
+                  {showTodayTimeOrDate(t.createdAt)}
+                </span>
                 {/* <button className="btn btn-outline px-2.5">
                   <PencilIcon className="size-6" />
                 </button> */}
-                <button className="px-2.5" onClick={() => removeTask(t.id)}>
+                <button
+                  onClick={() => {
+                    setIsOpenConfirmRemoveModal(true);
+                  }}
+                >
                   <XMarkIcon className="size-6" />
                 </button>
+
+                <ConfirmRemoveModal
+                  taskIdRemoved={t.id}
+                  key={t.id}
+                  isOpen={isOpenConfirmRemoveModal}
+                  onClose={() => setIsOpenConfirmRemoveModal(false)}
+                />
               </li>
             ))}
           </ul>
