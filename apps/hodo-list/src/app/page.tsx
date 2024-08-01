@@ -8,6 +8,7 @@ import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import { tasksTodayAtom } from "@/atoms/tasks-atom";
+import { ChangeTitleModal } from "@/components/modals/change-title-modal";
 import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
 import { ReportModal } from "@/components/modals/report-modal";
 import type { Task } from "@/types/Task";
@@ -15,6 +16,9 @@ import { showTodayTimeOrDate } from "@/utils/date-format";
 
 export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
+  const [updatingTaskId, setUpdatingTaskId] = useState<string | null>(null);
+
+  const [isOpenChangeTitleModal, setIsOpenChangeTitleModal] = useState(false);
   const [isOpenConfirmRemoveModal, setIsOpenConfirmRemoveModal] =
     useState(false);
 
@@ -59,6 +63,11 @@ export default function Home() {
     if (e.key === "Enter") {
       addTask();
     }
+  }
+
+  function handleClickTaskTitle(taskId: string) {
+    setUpdatingTaskId(taskId);
+    setIsOpenChangeTitleModal(true);
   }
 
   return (
@@ -118,12 +127,15 @@ export default function Home() {
                     onClick={() => updateTaskState(t.id)}
                   />
                 </label>
-                <span
+
+                <button
                   data-testid="task-title"
                   className="text-sm normal-case text-gray-200"
+                  onClick={() => handleClickTaskTitle(t.id)}
                 >
                   {t.title}
-                </span>
+                </button>
+
                 <span className="label-text font-extralight">
                   {showTodayTimeOrDate(t.createdAt)}
                 </span>
@@ -137,7 +149,6 @@ export default function Home() {
                 >
                   <XMarkIcon className="size-6" />
                 </button>
-
                 <ConfirmRemoveModal
                   taskIdRemoved={t.id}
                   key={t.id}
@@ -149,6 +160,14 @@ export default function Home() {
           </ul>
         </div>
       </div>
+
+      {isOpenChangeTitleModal && updatingTaskId && (
+        <ChangeTitleModal
+          isOpen={isOpenChangeTitleModal}
+          onClose={() => setIsOpenChangeTitleModal(false)}
+          taskId={updatingTaskId}
+        />
+      )}
     </div>
   );
 }
