@@ -9,8 +9,8 @@ import { useState } from "react";
 
 import { tasksTodayAtom } from "@/atoms/tasks-atom";
 import { ChangeTitleModal } from "@/components/modals/change-title-modal";
+import { ClosingTodayModal } from "@/components/modals/closing-today-modal";
 import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
-import { ReportModal } from "@/components/modals/report-modal";
 import type { Task } from "@/types/Task";
 import { showTodayTimeOrDate } from "@/utils/date-format";
 import { useBoolean } from "@/utils/useBoolean";
@@ -19,9 +19,13 @@ export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [updatingTaskId, setUpdatingTaskId] = useState<string | null>(null);
 
+  const [
+    isClosingTodayModalOpen,
+    openClosingTodayModal,
+    closeClosingTodayModal,
+  ] = useBoolean(false);
   const [isChangeTitleModalOpen, openChangeTitleModal, closeChangeTitleModal] =
     useBoolean(false);
-
   const [
     isConfirmRemoveModalOpen,
     openConfirmRemoveModal,
@@ -110,19 +114,9 @@ export default function Home() {
             추가
           </button>
 
-          {/* Open the modal using document.getElementById('ID').showModal() method */}
-          <button
-            className="btn"
-            onClick={() =>
-              (
-                document.getElementById("report_modal") as HTMLDialogElement
-              )?.showModal()
-            }
-          >
+          <button className="btn" onClick={openClosingTodayModal}>
             하루 마무리하기
           </button>
-
-          <ReportModal />
         </div>
 
         <div id="list-container">
@@ -173,6 +167,13 @@ export default function Home() {
           isOpen={isConfirmRemoveModalOpen}
           onClose={closeConfirmRemoveModal}
           taskId={updatingTaskId}
+        />
+      )}
+
+      {isClosingTodayModalOpen && (
+        <ClosingTodayModal
+          isOpen={isClosingTodayModalOpen}
+          onClose={closeClosingTodayModal}
         />
       )}
     </div>
