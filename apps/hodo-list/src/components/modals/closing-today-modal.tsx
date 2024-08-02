@@ -1,5 +1,6 @@
 "use client";
 
+import classNames from "classnames";
 import { useAtom } from "jotai";
 
 import { tasksTodayAtom, tasksYesterdayAtom } from "@/atoms/tasks-atom";
@@ -11,7 +12,15 @@ import {
   getTasksStateChangedToday,
 } from "@/utils/task-filters";
 
-export const ReportModal = () => {
+export type ClosingTodayModalProps = {
+  isOpen: boolean;
+  onClose: VoidFunction;
+};
+
+export const ClosingTodayModal = ({
+  isOpen,
+  onClose,
+}: ClosingTodayModalProps) => {
   const [tasksToday] = useAtom(tasksTodayAtom);
   const [tasksYesterday, setTasksYesterday] = useAtom(tasksYesterdayAtom);
 
@@ -20,7 +29,10 @@ export const ReportModal = () => {
   }
 
   return (
-    <dialog id="report_modal" className="modal">
+    <dialog
+      id="closing_today_modal"
+      className={classNames("modal", { "modal-open": isOpen })}
+    >
       <div className="modal-box">
         <h3 className="text-lg font-bold">하루 마무리하기</h3>
         <p className="py-4">오늘의 성장을 기록할게요.</p>
@@ -75,10 +87,18 @@ export const ReportModal = () => {
 
         <div className="modal-action">
           <form method="dialog" className="flex items-center gap-x-2">
-            <button className="btn btn-success" onClick={updateTasksYesterday}>
+            <button
+              className="btn btn-success"
+              onClick={() => {
+                updateTasksYesterday();
+                onClose();
+              }}
+            >
               기록 저장하기
             </button>
-            <button className="btn btn-outline btn-success">취소</button>
+            <button className="btn btn-outline btn-success" onClick={onClose}>
+              취소
+            </button>
           </form>
         </div>
       </div>
