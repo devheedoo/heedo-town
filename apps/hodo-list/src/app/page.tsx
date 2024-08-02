@@ -70,6 +70,11 @@ export default function Home() {
     setIsOpenChangeTitleModal(true);
   }
 
+  function handleClickRemoveButton(taskId: string) {
+    setUpdatingTaskId(taskId);
+    setIsOpenConfirmRemoveModal(true);
+  }
+
   return (
     <div
       className={classNames(
@@ -139,22 +144,10 @@ export default function Home() {
                 <span className="label-text font-extralight">
                   {showTodayTimeOrDate(t.createdAt)}
                 </span>
-                {/* <button className="btn btn-outline px-2.5">
-                  <PencilIcon className="size-6" />
-                </button> */}
-                <button
-                  onClick={() => {
-                    setIsOpenConfirmRemoveModal(true);
-                  }}
-                >
+
+                <button onClick={() => handleClickRemoveButton(t.id)}>
                   <XMarkIcon className="size-6" />
                 </button>
-                <ConfirmRemoveModal
-                  taskIdRemoved={t.id}
-                  key={t.id}
-                  isOpen={isOpenConfirmRemoveModal}
-                  onClose={() => setIsOpenConfirmRemoveModal(false)}
-                />
               </li>
             ))}
           </ul>
@@ -165,6 +158,14 @@ export default function Home() {
         <ChangeTitleModal
           isOpen={isOpenChangeTitleModal}
           onClose={() => setIsOpenChangeTitleModal(false)}
+          taskId={updatingTaskId}
+        />
+      )}
+
+      {isOpenConfirmRemoveModal && updatingTaskId && (
+        <ConfirmRemoveModal
+          isOpen={isOpenConfirmRemoveModal}
+          onClose={() => setIsOpenConfirmRemoveModal(false)}
           taskId={updatingTaskId}
         />
       )}

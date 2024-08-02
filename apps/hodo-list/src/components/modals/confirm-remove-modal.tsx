@@ -3,19 +3,21 @@ import { useAtom } from "jotai";
 
 import { tasksTodayAtom } from "@/atoms/tasks-atom";
 
-export const ConfirmRemoveModal = ({
-  taskIdRemoved,
-  isOpen,
-  onClose,
-}: {
-  taskIdRemoved: string;
+export type ConfirmRemoveModalProps = {
+  taskId: string;
   isOpen: boolean;
   onClose: VoidFunction;
-}) => {
+};
+
+export const ConfirmRemoveModal = ({
+  taskId,
+  isOpen,
+  onClose,
+}: ConfirmRemoveModalProps) => {
   const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
 
   function removeTask() {
-    const updatedTasks = tasksToday.filter((t) => t.id !== taskIdRemoved);
+    const updatedTasks = tasksToday.filter((t) => t.id !== taskId);
     setTasksToday(updatedTasks);
   }
 
