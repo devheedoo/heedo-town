@@ -13,14 +13,20 @@ import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
 import { ReportModal } from "@/components/modals/report-modal";
 import type { Task } from "@/types/Task";
 import { showTodayTimeOrDate } from "@/utils/date-format";
+import { useBoolean } from "@/utils/useBoolean";
 
 export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
   const [updatingTaskId, setUpdatingTaskId] = useState<string | null>(null);
 
-  const [isOpenChangeTitleModal, setIsOpenChangeTitleModal] = useState(false);
-  const [isOpenConfirmRemoveModal, setIsOpenConfirmRemoveModal] =
-    useState(false);
+  const [isChangeTitleModalOpen, openChangeTitleModal, closeChangeTitleModal] =
+    useBoolean(false);
+
+  const [
+    isConfirmRemoveModalOpen,
+    openConfirmRemoveModal,
+    closeConfirmRemoveModal,
+  ] = useBoolean(false);
 
   // TODO: LocalStorage 대신 로그인 후 데이터베이스 사용하기
   const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
@@ -67,12 +73,12 @@ export default function Home() {
 
   function handleClickTaskTitle(taskId: string) {
     setUpdatingTaskId(taskId);
-    setIsOpenChangeTitleModal(true);
+    openChangeTitleModal();
   }
 
   function handleClickRemoveButton(taskId: string) {
     setUpdatingTaskId(taskId);
-    setIsOpenConfirmRemoveModal(true);
+    openConfirmRemoveModal();
   }
 
   return (
@@ -154,18 +160,18 @@ export default function Home() {
         </div>
       </div>
 
-      {isOpenChangeTitleModal && updatingTaskId && (
+      {isChangeTitleModalOpen && updatingTaskId && (
         <ChangeTitleModal
-          isOpen={isOpenChangeTitleModal}
-          onClose={() => setIsOpenChangeTitleModal(false)}
+          isOpen={isChangeTitleModalOpen}
+          onClose={closeChangeTitleModal}
           taskId={updatingTaskId}
         />
       )}
 
-      {isOpenConfirmRemoveModal && updatingTaskId && (
+      {isConfirmRemoveModalOpen && updatingTaskId && (
         <ConfirmRemoveModal
-          isOpen={isOpenConfirmRemoveModal}
-          onClose={() => setIsOpenConfirmRemoveModal(false)}
+          isOpen={isConfirmRemoveModalOpen}
+          onClose={closeConfirmRemoveModal}
           taskId={updatingTaskId}
         />
       )}
