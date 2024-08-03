@@ -6,8 +6,8 @@ import { Noto_Sans_KR } from "next/font/google";
 const notoSansKR = Noto_Sans_KR({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Next.js Boilerplate",
-  description: "Set by Heedo",
+  title: "Hodo List",
+  description: "Todo List with daily snapshots",
 };
 
 export default function RootLayout({
@@ -17,6 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body className={notoSansKR.className}>{children}</body>
     </html>
   );
