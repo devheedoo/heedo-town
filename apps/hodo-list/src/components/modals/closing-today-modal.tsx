@@ -5,12 +5,7 @@ import { useAtom } from "jotai";
 
 import { tasksTodayAtom, tasksYesterdayAtom } from "@/atoms/tasks-atom";
 import { showTodayTimeOrDate } from "@/utils/date-format";
-import {
-  getTasksAddedDoneToday,
-  getTasksAddedTodoToday,
-  getTasksRemovedToday,
-  getTasksStateChangedToday,
-} from "@/utils/task-filters";
+import { getTasksDelayedToday, getTasksDoneToday } from "@/utils/task-filters";
 
 export type ClosingTodayModalProps = {
   isOpen: boolean;
@@ -21,11 +16,19 @@ export const ClosingTodayModal = ({
   isOpen,
   onClose,
 }: ClosingTodayModalProps) => {
-  const [tasksToday] = useAtom(tasksTodayAtom);
-  const [tasksYesterday, setTasksYesterday] = useAtom(tasksYesterdayAtom);
+  const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
+  const [, setTasksYesterday] = useAtom(tasksYesterdayAtom);
 
-  function updateTasksYesterday() {
+  /**
+   * 오늘 한 일 마무리하기
+   * - 어제 완료하지 않은 일들과 비교해서 오늘 완료한 일들 표시
+   * - [기록 저장하기] 버튼 클릭 시: 오늘 한 일을 어제 한 일에 저장하고, 미뤄진 일들만 오늘 할 일로 저장
+   */
+  function closeToday() {
+    const tasksDelayedToday = getTasksDelayedToday(tasksToday);
+
     setTasksYesterday(tasksToday);
+    setTasksToday(tasksDelayedToday);
   }
 
   return (
@@ -37,45 +40,10 @@ export const ClosingTodayModal = ({
         <h3 className="text-lg font-bold">하루 마무리하기</h3>
         <p className="py-4">오늘의 성장을 기록할게요.</p>
         <ul className="flex flex-col gap-y-1">
-          {getTasksStateChangedToday({ tasksYesterday, tasksToday }).map(
-            (t) => (
-              <li className="gap flex items-center" key={t.id}>
-                <label className="label gap-x-2">
-                  <span className="label-text font-light">[완료]</span>
-                  <span className="label-text">{t.title}</span>
-                  <span className="label-text font-extralight">
-                    {showTodayTimeOrDate(t.createdAt)}
-                  </span>
-                </label>
-              </li>
-            )
-          )}
-          {getTasksAddedDoneToday({ tasksYesterday, tasksToday }).map((t) => (
+          {getTasksDoneToday(tasksToday).map((t) => (
             <li className="gap flex items-center" key={t.id}>
               <label className="label gap-x-2">
-                <span className="label-text font-light">[추가+완료]</span>
-                <span className="label-text">{t.title}</span>
-                <span className="label-text font-extralight">
-                  {showTodayTimeOrDate(t.createdAt)}
-                </span>
-              </label>
-            </li>
-          ))}
-          {getTasksAddedTodoToday({ tasksYesterday, tasksToday }).map((t) => (
-            <li className="gap flex items-center" key={t.id}>
-              <label className="label gap-x-2">
-                <span className="label-text font-light">[추가]</span>
-                <span className="label-text">{t.title}</span>
-                <span className="label-text font-extralight">
-                  {showTodayTimeOrDate(t.createdAt)}
-                </span>
-              </label>
-            </li>
-          ))}
-          {getTasksRemovedToday({ tasksYesterday, tasksToday }).map((t) => (
-            <li className="gap flex items-center" key={t.id}>
-              <label className="label gap-x-2">
-                <span className="label-text font-light">[취소]</span>
+                <span className="label-text font-light">[완료]</span>
                 <span className="label-text">{t.title}</span>
                 <span className="label-text font-extralight">
                   {showTodayTimeOrDate(t.createdAt)}
@@ -90,7 +58,7 @@ export const ClosingTodayModal = ({
             <button
               className="btn btn-success"
               onClick={() => {
-                updateTasksYesterday();
+                closeToday();
                 onClose();
               }}
             >
