@@ -5,7 +5,8 @@ export const mapAtomWithLocalStorage = <T>(
   initialValue: Map<string, T>
 ) => {
   const getInitialValue = () => {
-    const item = localStorage.getItem(key);
+    const item =
+      typeof window !== "undefined" ? localStorage.getItem(key) : null;
     if (item !== null) {
       return new Map(JSON.parse(item));
     }
@@ -18,10 +19,12 @@ export const mapAtomWithLocalStorage = <T>(
       const nextValue: Map<string, T> =
         typeof update === "function" ? update(get(baseAtom)) : update;
       set(baseAtom, nextValue);
-      localStorage.setItem(
-        key,
-        JSON.stringify(Array.from(nextValue.entries()))
-      );
+      if (typeof window !== "undefined") {
+        localStorage.setItem(
+          key,
+          JSON.stringify(Array.from(nextValue.entries()))
+        );
+      }
     }
   );
   return derivedAtom;
