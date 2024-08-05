@@ -13,7 +13,7 @@ import { ClosingTodayModal } from "@/components/modals/closing-today-modal";
 import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
 import type { Task } from "@/types/task.type";
 import { showTodayTimeOrDate } from "@/utils/date-format";
-import { useBoolean } from "@/utils/useBoolean";
+import { useBoolean } from "@/utils/use-boolean";
 
 export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
