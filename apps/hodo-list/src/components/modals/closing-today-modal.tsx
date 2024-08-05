@@ -2,8 +2,10 @@
 
 import classNames from "classnames";
 import { useAtom } from "jotai";
+import { useState } from "react";
 
 import { tasksTodayAtom, tasksYesterdayAtom } from "@/atoms/tasks-atom";
+import { tasksSnapshotsAtom } from "@/atoms/tasks-snapshots-atom";
 import { showTodayTimeOrDate } from "@/utils/date-format";
 import { getTasksDelayedToday, getTasksDoneToday } from "@/utils/task-filters";
 
@@ -18,6 +20,9 @@ export const ClosingTodayModal = ({
 }: ClosingTodayModalProps) => {
   const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
   const [, setTasksYesterday] = useAtom(tasksYesterdayAtom);
+  const [tasksSnapshots, setTasksSnapshots] = useAtom(tasksSnapshotsAtom);
+
+  const [snapshotDate, setSnapshotDate] = useState<string>("");
 
   /**
    * 오늘 한 일 마무리하기
@@ -25,9 +30,12 @@ export const ClosingTodayModal = ({
    * - [기록 저장하기] 버튼 클릭 시: 오늘 한 일을 어제 한 일에 저장하고, 미뤄진 일들만 오늘 할 일로 저장
    */
   function closeToday() {
-    const tasksDelayedToday = getTasksDelayedToday(tasksToday);
-
     setTasksYesterday(tasksToday);
+
+    const updatedTasksSnapshots = tasksSnapshots.set(snapshotDate, tasksToday);
+    setTasksSnapshots(updatedTasksSnapshots);
+
+    const tasksDelayedToday = getTasksDelayedToday(tasksToday);
     setTasksToday(tasksDelayedToday);
   }
 
@@ -55,8 +63,15 @@ export const ClosingTodayModal = ({
 
         <div className="modal-action">
           <form method="dialog" className="flex items-center gap-x-2">
+            <input
+              type="date"
+              value={snapshotDate}
+              onChange={(e) => setSnapshotDate(e.target.value)}
+              className="peer"
+              required
+            />
             <button
-              className="btn btn-success"
+              className="btn btn-success peer-invalid:btn-disabled"
               onClick={() => {
                 closeToday();
                 onClose();
