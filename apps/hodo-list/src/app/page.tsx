@@ -11,7 +11,7 @@ import { tasksTodayAtom } from "@/atoms/tasks-atom";
 import { ChangeTitleModal } from "@/components/modals/change-title-modal";
 import { ClosingTodayModal } from "@/components/modals/closing-today-modal";
 import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
-import type { Task } from "@/types/Task";
+import type { Task } from "@/types/task.type";
 import { showTodayTimeOrDate } from "@/utils/date-format";
 import { useBoolean } from "@/utils/useBoolean";
 
