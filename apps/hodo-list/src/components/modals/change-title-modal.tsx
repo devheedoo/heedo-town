@@ -3,7 +3,7 @@ import { useAtom } from "jotai";
 import { useState } from "react";
 
 import { tasksTodayAtom } from "@/atoms/tasks-atom";
-import type { Task } from "@/types/Task";
+import type { Task } from "@/types/task.type";
 
 export type ChangeTitleModalProps = {
   isOpen: boolean;
