@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { tasksTodayAtom, tasksYesterdayAtom } from "@/atoms/tasks-atom";
 import { tasksSnapshotsAtom } from "@/atoms/tasks-snapshots-atom";
+import type { TasksSnapshot } from "@/types/tasks-snapshot.type";
 import { showTodayTimeOrDate } from "@/utils/date-format";
 import { getTasksDelayedToday, getTasksDoneToday } from "@/utils/task-filters";
 
@@ -32,7 +33,14 @@ export const ClosingTodayModal = ({
   function closeToday() {
     setTasksYesterday(tasksToday);
 
-    const updatedTasksSnapshots = tasksSnapshots.set(snapshotDate, tasksToday);
+    const newTasksSnapshot: TasksSnapshot = {
+      timestamp: new Date().valueOf(),
+      tasks: tasksToday,
+    };
+    const updatedTasksSnapshots = tasksSnapshots.set(
+      snapshotDate,
+      newTasksSnapshot
+    );
     setTasksSnapshots(updatedTasksSnapshots);
 
     const tasksDelayedToday = getTasksDelayedToday(tasksToday);
@@ -46,7 +54,7 @@ export const ClosingTodayModal = ({
     >
       <div className="modal-box">
         <h3 className="text-lg font-bold">하루 마무리하기</h3>
-        <p className="py-4">오늘의 성장을 기록할게요.</p>
+        <p className="py-4">완료 기록할 날짜 선택</p>
         <ul className="flex flex-col gap-y-1">
           {getTasksDoneToday(tasksToday).map((t) => (
             <li className="gap flex items-center" key={t.id}>
