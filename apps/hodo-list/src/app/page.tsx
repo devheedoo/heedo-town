@@ -8,7 +8,7 @@ import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import { tasksTodayAtom } from "@/atoms/tasks-atom";
-import { ArchievesModal } from "@/components/modals/archieves-modal";
+import { ArchiveModal } from "@/components/modals/archive-modal";
 import { ChangeTitleModal } from "@/components/modals/change-title-modal";
 import { ClosingTodayModal } from "@/components/modals/closing-today-modal";
 import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
@@ -25,7 +25,7 @@ export default function Home() {
     openClosingTodayModal,
     closeClosingTodayModal,
   ] = useBoolean(false);
-  const [isArchievesModalOpen, openArchievesModal, closeArchievesModal] =
+  const [isArchiveModalOpen, openArchiveModal, closeArchiveModal] =
     useBoolean(false);
   const [isChangeTitleModalOpen, openChangeTitleModal, closeChangeTitleModal] =
     useBoolean(false);
@@ -123,7 +123,7 @@ export default function Home() {
             하루 마무리하기
           </button>
 
-          <button className="btn" onClick={openArchievesModal}>
+          <button className="btn" onClick={openArchiveModal}>
             기록 되돌아보기
           </button>
         </div>
@@ -186,11 +186,8 @@ export default function Home() {
         />
       )}
 
-      {isArchievesModalOpen && (
-        <ArchievesModal
-          isOpen={isArchievesModalOpen}
-          onClose={closeArchievesModal}
-        />
+      {isArchiveModalOpen && (
+        <ArchiveModal isOpen={isArchiveModalOpen} onClose={closeArchiveModal} />
       )}
     </div>
   );

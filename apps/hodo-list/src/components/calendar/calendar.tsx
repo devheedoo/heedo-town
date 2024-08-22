@@ -21,8 +21,8 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState(
     formatToYYYYMMDD(year, month, today.getDate())
   );
-  const archievedDate = tasksSnapshots.get(selectedDate)?.timestamp ?? "";
-  const archievedTasks = tasksSnapshots.get(selectedDate)?.tasks ?? [];
+  const archivedDate = tasksSnapshots.get(selectedDate)?.timestamp ?? "";
+  const archivedTasks = tasksSnapshots.get(selectedDate)?.tasks ?? [];
 
   // derived states from selected month
   const startDateOfMonth = formatToYYYYMMDD(year, month, 1);
@@ -51,9 +51,8 @@ export default function Calendar() {
     }
   }
 
-  function handleClickArchieve(date: string) {
+  function handleClickArchive(date: string) {
     setSelectedDate(date);
-    // setTasksSnapshot(tasksSnapshots.get(date)!);
   }
 
   return (
@@ -99,7 +98,7 @@ export default function Calendar() {
 
           const thisDate = formatToYYYYMMDD(year, month, i + 1);
           const isTodayDate = isToday(thisDate);
-          const hasArchieve = Array.from(tasksSnapshots.keys()).includes(
+          const hasArchive = Array.from(tasksSnapshots.keys()).includes(
             thisDate
           );
           const isSelected = format(selectedDate, "yyyy-MM-dd") === thisDate;
@@ -112,11 +111,11 @@ export default function Calendar() {
                 "flex h-10 w-8 flex-col items-center gap-y-2.5 rounded-lg pt-1 hover:bg-green-100",
                 {
                   "text-gray-400": isWeekend,
-                  "pointer-events-none": !hasArchieve,
+                  "pointer-events-none": !hasArchive,
                   "bg-green-200": isSelected,
                 }
               )}
-              onClick={() => handleClickArchieve(thisDate)}
+              onClick={() => handleClickArchive(thisDate)}
             >
               {/* Day with green circle if today */}
               <div className="relative">
@@ -135,10 +134,10 @@ export default function Calendar() {
                 </div>
               </div>
 
-              {/* Green dot if has archieve */}
+              {/* Green dot if has archive */}
               <div
                 className={cn("size-1.5 rounded-full", {
-                  "bg-green-600": hasArchieve,
+                  "bg-green-600": hasArchive,
                 })}
               ></div>
             </button>
@@ -146,14 +145,14 @@ export default function Calendar() {
         })}
       </div>
 
-      {/* Archieved tasks */}
+      {/* Archived tasks */}
       <div id="list-container" className="bg-gray-500">
-        {archievedTasks.length === 0 && <span>기록 없음</span>}
+        {archivedTasks.length === 0 && <span>기록 없음</span>}
         <ul className="flex flex-col gap-y-2">
-          {archievedTasks.map((t) => (
+          {archivedTasks.map((t) => (
             <li
               className="flex items-center gap-1.5"
-              key={`${archievedDate}-${t.id}`}
+              key={`${archivedDate}-${t.id}`}
             >
               <label className="label cursor-pointer gap-x-2">
                 <input

@@ -4,15 +4,15 @@ import classNames from "classnames";
 
 import Calendar from "@/components/calendar/calendar";
 
-export type ArchievesModalProps = {
+export type ArchiveModalProps = {
   isOpen: boolean;
   onClose: VoidFunction;
 };
 
-export const ArchievesModal = ({ isOpen, onClose }: ArchievesModalProps) => {
+export const ArchiveModal = ({ isOpen, onClose }: ArchiveModalProps) => {
   return (
     <dialog
-      id="archieves_modal"
+      id="archive_modal"
       className={classNames("modal", { "modal-open": isOpen })}
     >
       <div className="modal-box">
