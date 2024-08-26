@@ -1,7 +1,6 @@
 "use client";
 
 import { XMarkIcon } from "@heroicons/react/24/solid";
-import classNames from "classnames";
 import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import type { KeyboardEvent } from "react";
@@ -12,10 +11,10 @@ import { ArchiveModal } from "@/components/modals/archive-modal";
 import { ChangeTitleModal } from "@/components/modals/change-title-modal";
 import { ClosingTodayModal } from "@/components/modals/closing-today-modal";
 import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
+import { EditAbilitiesModal } from "@/components/modals/edit-abilities-modal.tsx";
 import type { Task } from "@/types/task.type";
 import { showTodayTimeOrDate } from "@/utils/date-format";
 import { useBoolean } from "@/utils/use-boolean";
-import { EditAbilitiesModal } from "@/components/modals/edit-abilities-modal.tsx";
 
 export default function Home() {
   const [newTaskTitle, setNewTaskTitle] = useState<string>("");
@@ -95,82 +94,73 @@ export default function Home() {
   }
 
   return (
-    <div
-      className={classNames(
-        "flex min-h-screen items-center justify-center",
-        "text-3xl font-extrabold uppercase text-green-700"
-      )}
-    >
-      <div className="flex max-w-screen-lg flex-col items-center justify-center">
-        <h1 className="m-4">Hodo List</h1>
+    <div>
+      <div className="mb-4 flex gap-x-2">
+        <input
+          type="text"
+          placeholder="할 일을 적어주세요."
+          className="input input-bordered peer w-full placeholder:font-extralight"
+          value={newTaskTitle}
+          required
+          onChange={(e) => setNewTaskTitle(e.target.value)}
+          onKeyUp={handleKeyUpAddButton}
+          autoFocus // !!! nonviable on webkit
+          data-testid="task-input"
+        />
+        <button
+          className="btn btn-outline btn-success peer-invalid:btn-disabled"
+          onClick={addTask}
+        >
+          추가
+        </button>
+      </div>
 
-        <div className="mb-4 flex gap-x-2">
-          <input
-            type="text"
-            placeholder="할 일을 적어주세요."
-            className="input input-bordered peer w-full placeholder:font-extralight"
-            value={newTaskTitle}
-            required
-            onChange={(e) => setNewTaskTitle(e.target.value)}
-            onKeyUp={handleKeyUpAddButton}
-            autoFocus // !!! nonviable on webkit
-            data-testid="task-input"
-          />
-          <button
-            className="btn btn-outline btn-success peer-invalid:btn-disabled"
-            onClick={addTask}
-          >
-            추가
-          </button>
-        </div>
+      <div className="mb-4 flex gap-x-2">
+        <button className="btn" onClick={openClosingTodayModal}>
+          하루 마무리하기
+        </button>
 
-        <div className="mb-4 flex gap-x-2">
-          <button className="btn" onClick={openClosingTodayModal}>
-            하루 마무리하기
-          </button>
+        <button className="btn" onClick={openArchiveModal}>
+          기록 되돌아보기
+        </button>
 
-          <button className="btn" onClick={openArchiveModal}>
-            기록 되돌아보기
-          </button>
+        <button className="btn" onClick={openEditAbilitiesModal}>
+          능력치 관리하기
+        </button>
+      </div>
 
-          <button className="btn" onClick={openEditAbilitiesModal}>
-            능력치 관리하기
-          </button>
-        </div>
+      <div id="list-container">
+        {tasksToday.length === 0 && <span>No items...</span>}
+        <ul className="flex flex-col gap-y-2">
+          {tasksToday.map((t) => (
+            <li className="flex items-center gap-1.5" key={t.id}>
+              <label className="label cursor-pointer gap-x-2">
+                <input
+                  type="checkbox"
+                  className="checkbox checkbox-success"
+                  defaultChecked={t.state === "done"}
+                  onClick={() => updateTaskState(t.id)}
+                />
+              </label>
 
-        <div id="list-container">
-          {tasksToday.length === 0 && <span>No items...</span>}
-          <ul className="flex flex-col gap-y-2">
-            {tasksToday.map((t) => (
-              <li className="flex items-center gap-1.5" key={t.id}>
-                <label className="label cursor-pointer gap-x-2">
-                  <input
-                    type="checkbox"
-                    className="checkbox checkbox-success"
-                    defaultChecked={t.state === "done"}
-                    onClick={() => updateTaskState(t.id)}
-                  />
-                </label>
+              <button
+                data-testid="task-title"
+                className="text-sm normal-case text-gray-200"
+                onClick={() => handleClickTaskTitle(t.id)}
+              >
+                {t.title}
+              </button>
 
-                <button
-                  data-testid="task-title"
-                  className="text-sm normal-case text-gray-200"
-                  onClick={() => handleClickTaskTitle(t.id)}
-                >
-                  {t.title}
-                </button>
+              <span className="label-text font-extralight">
+                {showTodayTimeOrDate(t.createdAt)}
+              </span>
 
-                <span className="label-text font-extralight">
-                  {showTodayTimeOrDate(t.createdAt)}
-                </span>
-
-                <button onClick={() => handleClickRemoveButton(t.id)}>
-                  <XMarkIcon className="size-6" />
-                </button>
-              </li>
-            ))}
-          </ul>
-        </div>
+              <button onClick={() => handleClickRemoveButton(t.id)}>
+                <XMarkIcon className="size-6" />
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
 
       {isChangeTitleModalOpen && updatingTaskId && (
