@@ -26,11 +26,11 @@ export default function RootLayout({
       <body className={notoSansKR.className}>
         <div
           className={classNames(
-            "flex min-h-screen items-center justify-center",
+            "mt-10 flex min-h-screen justify-center",
             "text-3xl font-extrabold uppercase text-green-700"
           )}
         >
-          <div className="flex max-w-screen-lg flex-col items-center justify-center">
+          <div className="flex max-w-screen-lg flex-col items-center">
             <h1 className="m-4">Hodo List</h1>
 
             <Tabs />
