@@ -11,7 +11,6 @@ import { ArchiveModal } from "@/components/modals/archive-modal";
 import { ChangeTitleModal } from "@/components/modals/change-title-modal";
 import { ClosingTodayModal } from "@/components/modals/closing-today-modal";
 import { ConfirmRemoveModal } from "@/components/modals/confirm-remove-modal";
-import { EditAbilitiesModal } from "@/components/modals/edit-abilities-modal.tsx";
 import type { Task } from "@/types/task.type";
 import { showTodayTimeOrDate } from "@/utils/date-format";
 import { useBoolean } from "@/utils/use-boolean";
@@ -34,11 +33,6 @@ export default function Home() {
     openConfirmRemoveModal,
     closeConfirmRemoveModal,
   ] = useBoolean(false);
-  const [
-    isEditAbilitiesModalOpen,
-    openEditAbilitiesModal,
-    closeEditAbilitiesModal,
-  ] = useBoolean(false); // TODO: change to false;
 
   // TODO: LocalStorage 대신 로그인 후 데이터베이스 사용하기
   const [tasksToday, setTasksToday] = useAtom(tasksTodayAtom);
@@ -123,10 +117,6 @@ export default function Home() {
         <button className="btn" onClick={openArchiveModal}>
           기록 되돌아보기
         </button>
-
-        <button className="btn" onClick={openEditAbilitiesModal}>
-          능력치 관리하기
-        </button>
       </div>
 
       <div id="list-container">
@@ -188,13 +178,6 @@ export default function Home() {
 
       {isArchiveModalOpen && (
         <ArchiveModal isOpen={isArchiveModalOpen} onClose={closeArchiveModal} />
-      )}
-
-      {isEditAbilitiesModalOpen && (
-        <EditAbilitiesModal
-          isOpen={isEditAbilitiesModalOpen}
-          onClose={closeEditAbilitiesModal}
-        />
       )}
     </div>
   );

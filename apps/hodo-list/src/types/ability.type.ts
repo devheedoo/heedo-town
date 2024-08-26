@@ -1,6 +1,6 @@
 export type Ability = {
   id: string;
-  title: string;
+  name: string;
   createdAt: number;
   value: number;
 };
