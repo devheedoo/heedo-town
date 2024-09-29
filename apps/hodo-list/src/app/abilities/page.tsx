@@ -1,16 +1,34 @@
 "use client";
 
+import { XMarkIcon } from "@heroicons/react/24/solid";
 import { useAtom } from "jotai";
 import { nanoid } from "nanoid";
 import type { KeyboardEvent } from "react";
 import { useState } from "react";
 
 import { abilitiesAtom } from "@/atoms/abilities-atom";
+import { ConfirmModal } from "@/components/modals/confirm-modal";
+import { TextInputModal } from "@/components/modals/text-input-modal";
 import type { Ability } from "@/types/ability.type";
-import { showTodayTimeOrDate } from "@/utils/date-format";
+import { useBoolean } from "@/utils/use-boolean";
 
 export default function Abilities() {
   const [newAbilityName, setNewAbilityName] = useState("");
+  const [updatingAbilityId, setUpdatingAbilityId] = useState<string | null>(
+    null
+  );
+
+  const [
+    isOpenUpdateAbilityModal,
+    openUpdateAbilityModal,
+    closeUpdateAbilityModal,
+  ] = useBoolean(false);
+  const [
+    isOpenConfirmRemoveModal,
+    openConfirmRemoveModal,
+    closeConfirmRemoveModal,
+  ] = useBoolean(false);
+
   const [abilities, setAbilities] = useAtom(abilitiesAtom);
 
   function addAbility() {
@@ -33,6 +51,31 @@ export default function Abilities() {
       addAbility();
     }
   }
+
+  const handleClickRemoveButton = (abilityId: string) => {
+    setUpdatingAbilityId(abilityId);
+    openConfirmRemoveModal();
+  };
+
+  const removeAbility = () => {
+    const updatedAbilities = abilities.filter(
+      (ability) => ability.id !== updatingAbilityId
+    );
+    setAbilities(updatedAbilities);
+  };
+
+  const handleClickAbilityName = (abilityId: string) => {
+    setUpdatingAbilityId(abilityId);
+    openUpdateAbilityModal();
+  };
+
+  const updateAbilityName = (name: string) => {
+    const updatedAbilities = abilities.map((ability) =>
+      ability.id === updatingAbilityId ? { ...ability, name } : ability
+    );
+    setAbilities(updatedAbilities);
+  };
+
   return (
     <>
       <div className="mb-4 flex gap-x-2">
@@ -53,21 +96,49 @@ export default function Abilities() {
           추가
         </button>
       </div>
-      <ul className="flex flex-col gap-y-1">
-        {abilities.map((t, i) => (
-          <li className="gap flex items-center" key={t.id}>
-            <label className="label gap-x-2">
-              <span className="label-text">
-                {i + 1}. {t.name}
-              </span>
-              <span className="label-text">{t.value}</span>
-              <span className="label-text font-extralight">
-                {showTodayTimeOrDate(t.createdAt)}
-              </span>
+      <ul className="flex gap-2">
+        {abilities.map((ability) => (
+          <li
+            className="flex items-center rounded-lg bg-slate-700 px-4 py-1.5"
+            key={ability.id}
+          >
+            <label className="label gap-x-2 p-0">
+              <button
+                className="text-sm normal-case text-slate-900"
+                onClick={() => handleClickAbilityName(ability.id)}
+              >
+                {ability.name} {ability.value}
+              </button>
+              <button onClick={() => handleClickRemoveButton(ability.id)}>
+                <XMarkIcon className="size-4" />
+              </button>
             </label>
           </li>
         ))}
-      </ul>{" "}
+      </ul>
+
+      {isOpenConfirmRemoveModal && (
+        <ConfirmModal
+          isOpen={isOpenConfirmRemoveModal}
+          title={"능력치 제거"}
+          subtitle={"제거하시겠습니까?"}
+          onConfirm={removeAbility}
+          onClose={closeConfirmRemoveModal}
+        />
+      )}
+
+      {isOpenUpdateAbilityModal && (
+        <TextInputModal
+          isOpen={isOpenUpdateAbilityModal}
+          title={"능력치명 변경"}
+          subtitle={"능력치명을 입력해주세요."}
+          onConfirm={updateAbilityName}
+          onClose={closeUpdateAbilityModal}
+          defaultInputText={
+            abilities.find((ability) => ability.id === updatingAbilityId)?.name
+          }
+        />
+      )}
     </>
   );
 }
