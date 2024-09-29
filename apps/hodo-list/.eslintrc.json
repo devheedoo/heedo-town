@@ -40,7 +40,7 @@
   // ts, tsx, js 파일은 typescript-eslint/parser 적용
   "overrides": [
     {
-      "files": ["./src/*.ts", "./src/*.tsx", "./src/*.js"],
+      "files": ["./src/**/*.{ts,tsx}"],
       "parser": "@typescript-eslint/parser"
     }
   ]
